@@ -67,18 +67,29 @@ function generateAuthors() {
 // Funkcja do obsługi kliknięcia na tytuł artykułu
 function handleTitleClick(event) {
     event.preventDefault();
+
     const activeArticles = document.querySelectorAll('.post.active');
     activeArticles.forEach(article => article.classList.remove('active'));
 
     const activeLinks = document.querySelectorAll('.titles a.active');
     activeLinks.forEach(link => link.classList.remove('active'));
 
-    const clickedElement = event.target;
+    const clickedElement = event.currentTarget;
     clickedElement.classList.add('active');
 
     const articleSelector = clickedElement.getAttribute('href');
     const targetArticle = document.querySelector(articleSelector);
-    targetArticle.classList.add('active');
+
+    console.log('Clicked:', clickedElement.outerHTML);
+    console.log('Target Article Selector:', articleSelector);
+    console.log('Target Article:', targetArticle);
+
+    // Sprawdź, czy targetArticle nie jest null
+    if (targetArticle) {
+        targetArticle.classList.add('active');
+    } else {
+        console.error('Article not found for selector:', articleSelector);
+    }
 }
 
 // Dodaj nasłuchiwanie na kliknięcia na liście tytułów
