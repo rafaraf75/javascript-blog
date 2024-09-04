@@ -44,16 +44,21 @@ function generateTitleLinks() {
 function handleTitleClick(event) {
     event.preventDefault();
 
-    // Usunięcie klasy active ze wszystkich artykułów i linków
+    // Usunięcie klasy active ze wszystkich artykułów
     const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
-    for (const activeArticle of activeArticles) {
-    activeArticle.classList.remove("active");
-    }
+    activeArticles.forEach(article => article.classList.remove("active"));
 
+    // Usunięcie klasy active ze wszystkich linków do artykułów
     const activeLinks = document.querySelectorAll(`${optTitleListSelector} a.active`);
-    for (const activeLink of activeLinks) {
-    activeLink.classList.remove("active");
-    }
+    activeLinks.forEach(link => link.classList.remove("active"));
+
+    // Usunięcie klasy active ze wszystkich tagów
+    const activeTags = document.querySelectorAll(".tags a.active");
+    activeTags.forEach(tag => tag.classList.remove("active"));
+
+    // Usunięcie klasy active ze wszystkich autorów
+    const activeAuthors = document.querySelectorAll(".authors a.active");
+    activeAuthors.forEach(author => author.classList.remove("active"));
 
     // Dodanie klasy active do klikniętego linku
     const clickedElement = event.currentTarget;
@@ -104,16 +109,28 @@ function generateTags() {
 function handleTagClick(event) {
     event.preventDefault();
 
-    const clickedElement = event.currentTarget;
-    const tag = clickedElement.innerHTML.trim();
+    // Usunięcie klasy active ze wszystkich tagów
+    const activeTags = document.querySelectorAll(".tags a.active");
+    activeTags.forEach(tag => tag.classList.remove("active"));
 
-    console.log("Tag clicked:", tag);
+    // Usunięcie klasy active ze wszystkich autorów
+    const activeAuthors = document.querySelectorAll(".authors a.active");
+    activeAuthors.forEach(author => author.classList.remove("active"));
 
     // Usunięcie klasy active ze wszystkich artykułów
     const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
     activeArticles.forEach(article => article.classList.remove("active"));
 
+    // Usunięcie klasy active ze wszystkich linków do artykułów
+    const activeLinks = document.querySelectorAll(`${optTitleListSelector} a.active`);
+    activeLinks.forEach(link => link.classList.remove("active"));
+
+    // Dodanie klasy active do klikniętego tagu
+    const clickedElement = event.currentTarget;
+    clickedElement.classList.add("active");
+
     // Przefiltrowanie artykułów po tagach
+    const tag = clickedElement.innerHTML.trim();
     const articles = document.querySelectorAll(optArticleSelector);
     articles.forEach(article => {
         const articleTags = article.querySelectorAll(optArticleTagsSelector);
@@ -142,22 +159,33 @@ function addClickListenersToTags() {
 function handleAuthorClick(event) {
     event.preventDefault();
 
-    const clickedElement = event.currentTarget;
-    const author = clickedElement.textContent.trim();
+    // Usunięcie klasy active ze wszystkich autorów
+    const activeAuthors = document.querySelectorAll(".authors a.active");
+    activeAuthors.forEach(author => author.classList.remove("active"));
 
-    console.log("Author clicked:", author);
+    // Usunięcie klasy active ze wszystkich tagów
+    const activeTags = document.querySelectorAll(".tags a.active");
+    activeTags.forEach(tag => tag.classList.remove("active"));
 
     // Usunięcie klasy active ze wszystkich artykułów
     const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
     activeArticles.forEach(article => article.classList.remove("active"));
 
+    // Usunięcie klasy active ze wszystkich linków do artykułów
+    const activeLinks = document.querySelectorAll(`${optTitleListSelector} a.active`);
+    activeLinks.forEach(link => link.classList.remove("active"));
+
+    // Dodanie klasy active do klikniętego autora
+    const clickedElement = event.currentTarget;
+    clickedElement.classList.add("active");
+
     // Przefiltrowanie artykułów po autorze
+    const author = clickedElement.textContent.trim();
     const articles = document.querySelectorAll(optArticleSelector);
     let foundArticle = false;
 
     articles.forEach(article => {
         const articleAuthor = article.querySelector(optArticleAuthorSelector).textContent.trim().replace("by ", "");
-        console.log("Comparing:", articleAuthor, "with", author);
 
         if (articleAuthor === author) {
             article.classList.add("active");
