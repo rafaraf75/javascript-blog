@@ -156,7 +156,7 @@ function handleAuthorClick(event) {
     let foundArticle = false;
 
     articles.forEach(article => {
-        const articleAuthor = article.querySelector(optArticleAuthorSelector).textContent.trim();
+        const articleAuthor = article.querySelector(optArticleAuthorSelector).textContent.trim().replace('by ', '');
         console.log('Comparing:', articleAuthor, 'with', author);
 
         if (articleAuthor === author) {
