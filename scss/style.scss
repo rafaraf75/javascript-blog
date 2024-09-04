@@ -3,6 +3,10 @@
 /* Variables */
 $color-light: #f5f7fa;
 $color-dark: #444;
+$color-primary: #3498db;
+$color-accent: #e74c3c;
+$color-hover: lighten($color-primary, 20%);
+$box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
 $font-logo: 'Sacramento', cursive;
 $font-header: 'Oswald', sans-serif;
@@ -45,23 +49,28 @@ body {
   margin-left: 10px;
 }
 
+/* Sidebar and Posts - merged common styles */
+.sidebar, .posts {
+    background-color: #ffffff;
+    padding: 40px;
+    margin: 10px 10px 0;
+    border: 1px solid lighten($color-dark, 20%);
+    box-shadow: $box-shadow;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
+
 .sidebar {
   flex: 1 0 0;
-  background-color: #f0f4f8;
+  background-color: $color-light;
 }
 
 .posts {
   flex: 2 0 0;
-  background-color: #ffffff;
-}
-
-.sidebar, .posts {
-  background: $color-light;
-  margin-right: 10px;
-  padding: 40px;
-  border: 1px solid lighten($color-dark, 20%);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
 }
 
 /* Logo */
@@ -75,45 +84,47 @@ body {
 
 /* Lists */
 .list {
-  list-style-type: none;
-  padding: 0;
-  .active {
-    font-weight: bold;
-  }
-}
+    list-style-type: none;
+    padding: 0;
 
+    li {
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .active {
+      font-weight: bold;
+    }
+  }
+
+/* Active link styles */
 .list a.active {
-    background-color: #2ab1f4;
+    background-color: $color-primary;
     color: white;
     font-weight: bold;
     border-radius: 5px;
   }
 
   .tags a.active, .authors a.active {
-    color: #e74c3c;
+    color: $color-accent;
     font-weight: bold;
     text-decoration: underline;
   }
-.list-horizontal {
-  li {
+
+/* Horizontal List */
+.list-horizontal li {
     display: inline-block;
-  }
 }
+
 
 /* Animacja dla hover na tagach i autorach */
 .list-horizontal li a:hover {
-    background-color: #3498db;
+    background-color: $color-primary;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease, padding 0.3s ease;
-}
-
-/* Authors */
-.authors {
-  li {
-    margin-bottom: 12px;
-  }
 }
 
 /* Post */
@@ -121,66 +132,45 @@ body {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: $box-shadow;
     position: relative;
     z-index: 1;
     display: none;
-}
-.post.active {
+
+    &.active {
     display: block;
     z-index: 10;
     transform: translateY(0);
     opacity: 1;
+    }
 }
-
 
 .post-author {
-  font-style: italic;
-}
+    font-style: italic;
+  }
 
+/* Post tags */
 .post-tags {
   display: flex;
+
   p {
     margin: 0 10px 0 0;
   }
 }
 
-/* Stylizacja kart z artykułami i sekcjami bocznymi */
-.posts, .sidebar {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px;
-    transition: box-shadow 0.3s ease-in-out;
-  }
-
-  /* Dodanie efektu hover do kart */
-  .posts:hover, .sidebar:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-/* Ulepszenie wyglądu linków */
+/* Link styles */
 .titles a, .tags a, .authors a {
     text-decoration: none;
     font-size: 18px;
     font-weight: 700;
-    color: #3498db;
+    color: $color-primary;
     transition: color 0.3s ease-in-out, transform 0.3s ease;
-}
 
-.titles a:hover, .tags a:hover, .authors a:hover {
-    color: #e74c3c;
-    transform: scale(1.2);
-}
-
-/* Lepsza estetyka dla list */
-.titles li, .tags li, .authors li {
-    margin-bottom: 10px;
-    list-style: none;
-    border-bottom: 1px solid #eee;
-  padding-bottom: 5px;
-}
+    &:hover {
+      color: $color-accent;
+      transform: scale(1.2);
+    }
+  }
 
 /* Dostosowanie do urządzeń mobilnych */
 @media screen and (max-width: 768px) {
@@ -208,9 +198,4 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.post.active {
-    display: block;
-    animation: fadeInUp 0.6s ease;
 }
