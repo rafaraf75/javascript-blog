@@ -86,6 +86,15 @@ body {
   }
 }
 
+/* Animacja dla hover na tagach i autorach */
+.list-horizontal li a:hover {
+    background-color: #3498db;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, padding 0.3s ease;  // Płynne przejście tła i paddingu
+}
+
 /* Authors */
 .authors {
   li {
@@ -96,15 +105,16 @@ body {
 /* Post */
 .post {
     opacity: 0;
-    transition: opacity 0.6s ease-in-out;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
     position: relative;
-    width: 100%;
     z-index: 1;
     display: none;
 }
 .post.active {
     display: block;
     z-index: 10;
+    transform: translateY(0);
     opacity: 1;
 }
 
@@ -124,11 +134,12 @@ body {
 .titles a, .tags a, .authors a {
     text-decoration: none;
     color: #3498db;
-    transition: color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, transform 0.3s ease;
 }
 
 .titles a:hover, .tags a:hover, .authors a:hover {
     color: #e74c3c;
+    transform: scale(1.05);
 }
 
 /* Lepsza estetyka dla list */
@@ -151,4 +162,21 @@ body {
     .post {
         width: 100%;
     }
+}
+
+/* Definiowanie animacji przy pojawianiu się artykułu */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.post.active {
+    display: block;
+    animation: fadeInUp 0.6s ease;  // Stosujemy animację na aktywny artykuł
 }
