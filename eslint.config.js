@@ -1,21 +1,31 @@
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
+
+// Konwersja do nowego formatu flat-config
+const compat = new FlatCompat({
+  baseDirectory: import.meta.url,
+  resolvePluginsRelativeTo: import.meta.url,
+});
+
 export default [
-    {
-      files: ["**/*.js"],
-      languageOptions: {
-        ecmaVersion: 2015,
-        sourceType: "module",
-        globals: {
-          browser: true,  // Dla środowiska przeglądarki
-          node: true,     // Dla środowiska Node.js
-        },
-      },
-      rules: {
-        indent: ["error", 2], // Wymuszanie wcięcia na 2 spacje
-        "linebreak-style": ["off"], // Wyłączanie wymogu stylu linii
-        quotes: ["error", "single", { allowTemplateLiterals: true }], // Preferowanie pojedynczych cudzysłowów
-        semi: ["error", "always"], // Wymuszanie średników
-        "no-console": "off", // Wyłączanie ostrzeżeń dla console.log
-        "no-prototype-builtins": "off", // Wyłączanie ostrzeżeń dla prototypów
+  js.configs.recommended,  // Domyślne ustawienia zalecane przez ESLint
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2015,
+      sourceType: 'module',
+      globals: {
+        document: 'readonly', // Definiowanie globalnych zmiennych
+        console: 'readonly',
       },
     },
-  ];
+    rules: {
+      indent: ['error', 2],
+      'linebreak-style': ['off'],
+      quotes: ['error', 'single', { allowTemplateLiterals: true }],
+      semi: ['error', 'always'],
+      'no-console': 'off',
+      'no-prototype-builtins': 'off',
+    },
+  },
+];

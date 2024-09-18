@@ -21,15 +21,18 @@
     "watch:browsersync": "browser-sync start --server --files\"css/*.css\" \"*.html\" \"js/*.js\"",
     "watch:sassprefixer": "onchange sass/*.scss -- npm run build-dev",
     "lint": "eslint js/script.js",
-    "lint:fix": "eslint js/script.js --fix"
+    "lint:fix": "eslint js/script.js --fix",
+    "lint:styles": "stylelint 'scss/**/*.scss'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.10.0",
     "autoprefixer": "^10.2.4",
     "browser-sync": "^3.0.2",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "html-validate": "^8.21.0",
     "mkdirp": "^0.5.1",
     "node-sass": "^9.0.0",
@@ -37,6 +40,8 @@
     "onchange": "^7.1.0",
     "postcss": "^8.2.6",
     "postcss-cli": "^8.3.1",
-    "sass": "^1.77.8"
+    "sass": "^1.77.8",
+    "stylelint": "^16.9.0",
+    "stylelint-config-standard-scss": "^13.1.0"
   }
 }
