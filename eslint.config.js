@@ -1,25 +1,21 @@
 export default [
-  {
-    files: ["**/*.js"],
-    languageOptions: {
-      globals: {
-        browser: true, // Zmienna globalna dla środowiska przeglądarki
-        node: true, // Zmienna globalna dla środowiska Node.js
-        es6: true // Ustawienie dla ES6
-      }
+    {
+      files: ["**/*.js"],
+      languageOptions: {
+        ecmaVersion: 2015,
+        sourceType: "module",
+        globals: {
+          browser: true,  // Dla środowiska przeglądarki
+          node: true,     // Dla środowiska Node.js
+        },
+      },
+      rules: {
+        indent: ["error", 2], // Wymuszanie wcięcia na 2 spacje
+        "linebreak-style": ["off"], // Wyłączanie wymogu stylu linii
+        quotes: ["error", "single", { allowTemplateLiterals: true }], // Preferowanie pojedynczych cudzysłowów
+        semi: ["error", "always"], // Wymuszanie średników
+        "no-console": "off", // Wyłączanie ostrzeżeń dla console.log
+        "no-prototype-builtins": "off", // Wyłączanie ostrzeżeń dla prototypów
+      },
     },
-    rules: {
-      "semi": ["error", "always"], // Wymusza średniki
-      "quotes": ["error", "double"], // Wymusza podwójne cudzysłowy
-      "no-var": "error", // Blokuje użycie var
-      "prefer-const": "error", // Zaleca używanie const
-      "eqeqeq": ["error", "always"], // Wymusza użycie ===
-      "curly": ["error", "all"], // Wymusza używanie klamr
-      "no-unused-vars": "warn", // Ostrzeżenie dla nieużywanych zmiennych
-      "no-console": "off" // Możesz wyłączyć ostrzeżenie dla console.log
-    }
-  }
-];
-
-
-
+  ];
