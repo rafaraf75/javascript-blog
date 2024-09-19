@@ -7,7 +7,6 @@ $color-primary: #3498db;
 $color-accent: #e74c3c;
 $color-hover: lighten($color-primary, 20%);
 $box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-
 $font-logo: 'Sacramento', cursive;
 $font-header: 'Oswald', sans-serif;
 $font-text: 'Source Sans Pro', sans-serif;
@@ -117,8 +116,6 @@ body {
     display: inline-block;
 }
 
-
-/* Animacja dla hover na tagach i autorach */
 .list-horizontal li a:hover {
     background-color: $color-primary;
     color: white;
@@ -172,7 +169,6 @@ body {
     }
   }
 
-/* Dostosowanie do urządzeń mobilnych */
 @media screen and (max-width: 768px) {
     .titles, .tags, .authors {
         text-align: center;
@@ -188,7 +184,26 @@ body {
     }
 }
 
-/* Definiowanie animacji przy pojawianiu się artykułu */
+.tag-size-1 {
+  font-size: 12px;
+}
+
+.tag-size-2 {
+  font-size: 14px;
+}
+
+.tag-size-3 {
+  font-size: 16px;
+}
+
+.tag-size-4 {
+  font-size: 18px;
+}
+
+.tag-size-5 {
+  font-size: 20px;
+}
+
 @keyframes fadeInUp {
     0% {
         opacity: 0;
