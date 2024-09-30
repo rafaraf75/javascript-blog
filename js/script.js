@@ -1,6 +1,6 @@
 'use strict';
 
-//Opcje
+// Options
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
@@ -8,72 +8,63 @@ const optArticleSelector = '.post',
   optTagsListSelector = '.tags',
   optArticleAuthorSelector = '.post-author',
   optAuthorsListSelector = '.authors',
-  optCloudClassCount = 5,  // liczba klas rozmiaru
+  optCloudClassCount = 5,
   optCloudClassPrefix = 'tag-size-';
 
-// Funkcja do generowania listy tytułów artykułów
-function generateTitleLinks() {
+// Function to generate a list of article titles
+function generateTitleLinks(articles = document.querySelectorAll(optArticleSelector)) {
   const titleList = document.querySelector(optTitleListSelector);
   titleList.innerHTML = '';
 
-  //Pobranie wszystkich artykułów
-  const articles = document.querySelectorAll(optArticleSelector);
   let html = '';
 
-  //Pętla po wszystkich artykułach
+  // Loop through all articles
   for (const article of articles) {
 
-    //Pobranie id artykułu
+    // Get the article ID
     const articleId = article.getAttribute('id');
 
-    //Pobranie tytułu artykułu
+    // Get the article title
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
-    //Tworzenie kodu HTML linku
+    // Create HTML code for the link
     const linkHTML = `<li><a href="#${articleId}"><span>${articleTitle}</span></a></li>`;
     html += linkHTML;
   }
 
-  // Dodanie wszystkich linków do listy w lewej kolumnie
+  // Add all links to the list in the left column
   titleList.innerHTML = html;
 
-  // Dodanie nasłuchiwania na kliknięcia w tytuły
+  // Add event listeners for clicking on titles
   const links = document.querySelectorAll(`${optTitleListSelector} a`);
   for (const link of links) {
     link.addEventListener('click', handleTitleClick);
   }
 }
 
-// Funkcja do obsługi kliknięcia na tytuł artykułu
+// Function to handle clicking on an article title
 function handleTitleClick(event) {
   event.preventDefault();
 
-  // Usunięcie klasy active ze wszystkich artykułów
+  // Remove the active class from all articles
   const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
   activeArticles.forEach(article => article.classList.remove('active'));
 
-  // Usunięcie klasy active ze wszystkich linków do artykułów
+  // Remove the active class from all article links
   const activeLinks = document.querySelectorAll(`${optTitleListSelector} a.active`);
   activeLinks.forEach(link => link.classList.remove('active'));
 
-  // Usunięcie klasy active ze wszystkich tagów i autorów
-  const activeTags = document.querySelectorAll('.tags a.active');
-  activeTags.forEach(tag => tag.classList.remove('active'));
-
-  const activeAuthors = document.querySelectorAll('.authors a.active');
-  activeAuthors.forEach(author => author.classList.remove('active'));
-
-  // Dodanie klasy active do klikniętego linku
+  // Add the active class to the clicked link
   const clickedElement = event.currentTarget;
   clickedElement.classList.add('active');
 
-  // Wyświetlenie powiązanego artykułu
+  // Display the associated article
   const articleSelector = clickedElement.getAttribute('href');
   const targetArticle = document.querySelector(articleSelector);
   targetArticle.classList.add('active');
 }
 
-// Funkcja do generowania chmury tagów
+// Function to generate the tag cloud
 function calculateTagClass(count, params) {
   const normalizedCount = count - params.min;
   const normalizedMax = params.max - params.min;
@@ -82,14 +73,14 @@ function calculateTagClass(count, params) {
   return optCloudClassPrefix + classNumber;
 }
 
-// Funkcja do generowania listy tagów
+// Function to generate a list of tags
 function generateTags() {
 
-  // Znalezienie wszystkich artykułów
+  // Find all articles
   const articles = document.querySelectorAll(optArticleSelector);
   let allTags = {};
 
-  // Dla każdego artykułu
+  // For each article
   for (const article of articles) {
     const tagsWrapper = article.querySelector('.post-tags ul');
     const articleTags = article.querySelectorAll(optArticleTagsSelector);
@@ -109,7 +100,7 @@ function generateTags() {
     tagsWrapper.innerHTML = html;
   }
 
-  // Parametry do obliczenia wielkości tagów
+  // Parameters for calculating tag size
   const tagsParams = {
     min: Math.min(...Object.values(allTags)),
     max: Math.max(...Object.values(allTags))
@@ -126,50 +117,90 @@ function generateTags() {
   addClickListenersToTags();
 }
 
-// Funkcja do obsługi kliknięcia na tag
+// Function to filter articles by tag or author
+function filterArticlesBy(criteria, value) {
+  const articles = document.querySelectorAll(optArticleSelector);
+  const filteredArticles = [];
+
+  articles.forEach(article => {
+    if (criteria === 'tag') {
+      const articleTags = article.querySelectorAll(optArticleTagsSelector);
+      articleTags.forEach(articleTag => {
+        if (articleTag.textContent.trim() === value) {
+          filteredArticles.push(article);
+        }
+      });
+    } else if (criteria === 'author') {
+      const articleAuthor = article.querySelector(optArticleAuthorSelector).textContent.trim().replace('by ', '');
+      if (articleAuthor === value) {
+        filteredArticles.push(article);
+      }
+    }
+  });
+
+  return filteredArticles;
+}
+
+// Function to handle clicking on a tag
 function handleTagClick(event) {
-  console.log('Kliknięto na tag');
   event.preventDefault();
 
-  // Usunięcie klasy active ze wszystkich tagów
+  // Remove the active class from all tags and authors
   const activeTags = document.querySelectorAll('.tags a.active');
+  const activeAuthors = document.querySelectorAll('.authors a.active');
   activeTags.forEach(tag => tag.classList.remove('active'));
+  activeAuthors.forEach(author => author.classList.remove('active'));
 
-  // Dodanie klasy active do klikniętego tagu
+  // Add the active class to the clicked tag
   const clickedElement = event.currentTarget;
   clickedElement.classList.add('active');
   console.log(clickedElement);
 
-  // Usunięcie klasy active ze wszystkich artykułów i autorów
+  // Remove active articles before filtering
   const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
   activeArticles.forEach(article => article.classList.remove('active'));
 
-  const activeAuthors = document.querySelectorAll('.authors a.active');
-  activeAuthors.forEach(author => author.classList.remove('active'));
-
-  // Usunięcie klasy active ze wszystkich linków do artykułów
-  const activeArticleLinks = document.querySelectorAll(`${optTitleListSelector} a.active`);
-  activeArticleLinks.forEach(link => link.classList.remove('active'));
-
-  // Przefiltrowanie artykułów po tagach
+  // Filter articles by tag
   const tag = clickedElement.innerHTML.trim();
-  const articles = document.querySelectorAll(optArticleSelector);
+  const filteredArticles = filterArticlesBy('tag', tag);
 
-  articles.forEach(article => {
-    const articleTags = article.querySelectorAll(optArticleTagsSelector);
-    let hasTag = false;
-    articleTags.forEach(articleTag => {
-      if (articleTag.textContent.trim() === tag) {
-        hasTag = true;
-      }
-    });
-    if (hasTag) {
-      article.classList.add('active');
-    }
-  });
+  generateTitleLinks(filteredArticles);
+
+  if (filteredArticles.length > 0) {
+    filteredArticles[0].classList.add('active');
+  }
 }
 
-// Funkcja do dodania nasłuchiwania na kliknięcia w tagi
+// Function to handle clicking on an author
+function handleAuthorClick(event) {
+  event.preventDefault();
+
+  // Remove the active class from all authors and tags
+  const activeAuthors = document.querySelectorAll('.authors a.active');
+  const activeTags = document.querySelectorAll('.tags a.active');
+  activeAuthors.forEach(author => author.classList.remove('active'));
+  activeTags.forEach(tag => tag.classList.remove('active'));
+
+  // Add the active class to the clicked author
+  const clickedElement = event.currentTarget;
+  clickedElement.classList.add('active');
+
+  // Remove active articles before filtering
+  const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
+  activeArticles.forEach(article => article.classList.remove('active'));
+
+  // Filter articles by author
+  const author = clickedElement.innerHTML.trim().replace('by ','');
+  const filteredArticles = filterArticlesBy('author', author);
+  console.log(`Articles filtered by author (${author}): ${filteredArticles.length}`);
+  generateTitleLinks(filteredArticles);
+
+  if (filteredArticles.length > 0) {
+    filteredArticles[0].classList.add('active');
+  }
+}
+
+// Function to add click event listeners to tags
 function addClickListenersToTags() {
   const tagLinks = document.querySelectorAll('.tags a');
   for (const tagLink of tagLinks) {
@@ -177,70 +208,7 @@ function addClickListenersToTags() {
   }
 }
 
-// Funkcja do generowania listy autorów
-function generateAuthors() {
-  const articles = document.querySelectorAll(optArticleSelector);
-  const allAuthors = {};
-
-  for (const article of articles) {
-    const authorElement = article.querySelector(optArticleAuthorSelector);
-    const authorText = authorElement.textContent.replace('by ', '').trim();
-
-    if (!allAuthors[authorText]) {
-      allAuthors[authorText] = 1;
-    } else {
-      allAuthors[authorText]++;
-    }
-  }
-
-  const authorsList = document.querySelector(optAuthorsListSelector);
-  authorsList.innerHTML = '';
-
-  for (const author in allAuthors) {
-    const authorHTML = `<li><a href="#" class="author-link">${author}</a></li>`;
-    authorsList.innerHTML += authorHTML;
-  }
-
-  addClickListenersToAuthors();
-}
-
-// Funkcja do obsługi kliknięcia na autora
-function handleAuthorClick(event) {
-  event.preventDefault();
-
-  // Usunięcie klasy active ze wszystkich autorów
-  const activeAuthors = document.querySelectorAll('.authors a.active');
-  activeAuthors.forEach(author => author.classList.remove('active'));
-
-  // Dodanie klasy active do klikniętego autora
-  const clickedElement = event.currentTarget;
-  clickedElement.classList.add('active');
-
-  // Usunięcie klasy active ze wszystkich artykułów i tagów
-  const activeArticles = document.querySelectorAll(`${optArticleSelector}.active`);
-  activeArticles.forEach(article => article.classList.remove('active'));
-
-  const activeTags = document.querySelectorAll('.tags a.active');
-  activeTags.forEach(tag => tag.classList.remove('active'));
-
-  // Usunięcie klasy active ze wszystkich linków do artykułów
-  const activeArticleLinks = document.querySelectorAll(`${optTitleListSelector} a.active`);
-  activeArticleLinks.forEach(link => link.classList.remove('active'));
-
-  // Przefiltrowanie artykułów po autorze
-  const author = clickedElement.textContent.trim();
-  const articles = document.querySelectorAll(optArticleSelector);
-
-  articles.forEach(article => {
-    const articleAuthor = article.querySelector(optArticleAuthorSelector).textContent.trim().replace('by ', '');
-
-    if (articleAuthor === author) {
-      article.classList.add('active');
-    }
-  });
-}
-
-// Funkcja do dodania nasłuchiwania na kliknięcia w autorów
+// Function to add click event listeners to authors
 function addClickListenersToAuthors() {
   const authorLinks = document.querySelectorAll('.author-link');
 
@@ -249,10 +217,39 @@ function addClickListenersToAuthors() {
   }
 }
 
-// Uruchomienie funkcji po załadowaniu DOM
+// Function to generate a list of authors
+function generateAuthors() {
+  const articles = document.querySelectorAll(optArticleSelector);
+  let allAuthors = {};
+
+  // Collect all authors
+  articles.forEach(article => {
+    const author = article.querySelector(optArticleAuthorSelector).textContent.trim();
+    if (!allAuthors[author]) {
+      allAuthors[author] = 1;
+    } else {
+      allAuthors[author]++;
+    }
+  });
+
+  // Generate the list of authors
+  const authorsList = document.querySelector(optAuthorsListSelector);
+  let html = '';
+  for (const author in allAuthors) {
+    const authorHTML = `<li><a href="#" class="author-link">${author}</a></li>`;
+    html += authorHTML;
+  }
+  authorsList.innerHTML = html;
+
+  // Add click event listeners to authors
+  addClickListenersToAuthors();
+}
+
+// Initialize functions after the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
   generateTitleLinks();
   generateTags();
   generateAuthors();
+  addClickListenersToAuthors();
 });
 
